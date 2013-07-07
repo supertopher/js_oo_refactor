@@ -1,20 +1,39 @@
-$(document).ready(function() {
+$(function() {
+  var die = Die();
+  die.init();
+});
 
-
-  var addDice = function() {
-    $('.dice').append('<div class="die">0</div>');
+var Die = function(){
+  var self = {
+    addSelector: '#roller button.add',
+    rollSelector: '#roller button.roll',
+    diceSelector: '.dice',
+    dieHtml: '<div class="die">0</div>',
+    dieSelector: '.die'
   };
 
-  var getRandomNumber = function(k, die) {
+  self.init = function(){
+    $(self.addSelector).on('click',function(event){
+      addDie(event);
+    });
+
+    $(self.rollSelector).on('click', function(event){
+      rollDie(event);
+    })
+  };
+
+
+  rollDie = function(){
+    $(self.dieSelector).each(function(k, die) {
       var value = Math.floor((Math.random()*6)+1);
       $(die).text(value);
-    }
-
-  var rollDice = function() {
-    $('.die').each(getRandomNumber);
+    });
   };
 
-  $('#roller button.add').on('click', addDice);
+  addDie = function(){
+    $(self.diceSelector).append(self.dieHtml);
+  };
 
-  $('#roller button.roll').on('click', rollDice);
-});
+  return self;
+
+};
